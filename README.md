@@ -1,6 +1,6 @@
 # DigitalStethoscope (Completed 06/25/2019)
 
-## Inspiration
+## Inspiration 
 2 years ago I developed a nasty infection in my sinus. It took 3 rounds of anti-biotics to finally rid myself of it. However, the damage it did left me with a peculiar situation.
 I can now hear my heartbeat in my left year. It comes and goes, more often when I have worked out a bit. Initially I found it annoying, especially when falling asleep but overtime
 I found it quite soothing especially when anxious. So I figured I could make a simple digital stethoscope for others to use as well. Something that you could carry with you easily.
@@ -14,8 +14,9 @@ I've never worked with a purely analog circuit before so this would be a good wa
     3. Voltage Follower
     4. Decoupling Capacitors
     5. Output Jack
-3. Issues
-4. Future Scope
+4. Media
+5. Issues
+6. Future Scope
 
 ## Feature List
 - Form factor should be as small as possible
@@ -29,32 +30,61 @@ I've never worked with a purely analog circuit before so this would be a good wa
 
 ## Design Breakdown
 
+Board Layout
+![board](https://user-images.githubusercontent.com/25108047/104095077-f4d61e80-52ba-11eb-9096-18701f9b5418.png)
+
+Schematic Layout
+![Schematic](https://user-images.githubusercontent.com/25108047/104095085-fd2e5980-52ba-11eb-8ce1-a3cc1413bb9e.png)
+
 ### Piezoelectric sensor
-[A piezoelectric sensor](https://en.wikipedia.org/wiki/Piezoelectric_sensor#:~:text=A%20piezoelectric%20sensor%20is%20a,press'%20or%20'squeeze'.) uses the [piezoelectric effect](https://www.autodesk.com/products/eagle/blog/piezoelectricity/) to generate current at its terminals. Basically, when exposed to even the slightest mechanical stress, it generates a signal in proportion to the force rn it. This makes it well suipdfted as a surface placed microphone. I found that when I placed my device on a table, it could sometimes pickup conversations being had in the same room. 
+![piezo](https://user-images.githubusercontent.com/25108047/104095095-05869480-52bb-11eb-9e83-76edc6a4df5e.png)
+
+[A piezoelectric sensor](https://en.wikipedia.org/wiki/Piezoelectric_sensor#:~:text=A%20piezoelectric%20sensor%20is%20a,press'%20or%20'squeeze'.) uses the [piezoelectric effect](https://www.autodesk.com/products/eagle/blog/piezoelectricity/) to generate current at its terminals. Basically, when exposed to even the slightest mechanical stress, it generates a signal in proportion to the force on it. This makes it well suited as a surface placed microphone. I found that when I placed my device on a table, it could sometimes pickup conversations being had in the same room. 
 The fact that it is incredibly thin and comes in various sizes makes it easy to build a simple case for as well.
 
+I placed a 10k ohm potentiometer to attenuate the signal for volume control.
+
 ### Audio Amplifier
+![audio](https://user-images.githubusercontent.com/25108047/104095091-03bcd100-52bb-11eb-88dc-7dc0b73480fa.png)
 An audio amplifier is an opamp however the key difference being that it can drive far more current into low resistance loads like headphones. Basically it's output power is 
 a lot highter.
 
 I used the [LM386](https://www.ti.com/lit/ds/symlink/lm386.pdf) low voltage audio amplifier. In fact, the reasons I used it was that it is very simple to interface and that there are countless hobbyist projects based on it. Another advantage is that it was built for low power battery operated devices.
 
-By adjusting external resistors at certain pins, you can change the gain as well as introduce a kind of base boost. The circuit example my design is based on is given in the typical application section of the datasheet [Section 9.2.5].
+By adjusting external resistors at certain pins, you can change the gain as well as introduce a kind of base boost. The circuit example my design is based on is given in the typical application section of the datasheet [Section 9.2.5]. I used a 5k and 10k ohm potentiometers for amplifier and base boost control.
 
 ### Voltage Follower
+![158](https://user-images.githubusercontent.com/25108047/104095099-061f2b00-52bb-11eb-8414-66462a861548.png)
+
 A voltage follower is an opamp circuit that is used to act as a buffer between 2 sections of a circuit to isolate them from one another. It is also known as a unity gain amplifier because its gain is 1. Thus the voltage signal at the input is replecated at the output. 
 
 My reasoning for using this was that I didn't want changes in impedance or capacitance at the Piezeoelectric sensors end to affect that audio amplifier. 
 
-I chose the[LM158](https://www.ti.com/product/LM158) mostly because it was lying around. At the time I figured it might not work so just in case I placed a pad for a 0 ohm resistor between the output of sensor and input of the audio amplifier, thus avoiding the voltage follower completely. I deliberately chose to make a voltage follower instead of a buffer IC out of curiosity. 
+I chose the[LM158](https://www.ti.com/product/LM158) mostly because it was lying around. At the time I figured it might not work so just in case I placed a pad for a 0 ohm resistor between the output of sensor and input of the audio amplifier, thus avoiding the voltage follower completely. I deliberately chose to make a voltage follower instead of using a buffer IC out of curiosity. 
 
 ### Decoupling Capacitors
-With any circuit, [decoupling and by-pass capacitors](https://components101.com/articles/decoupling-capacitor-vs-bypass-capacitors-working-and-applications) are essential to smoothen out noisy signals are shunt away the noise. My biggest concern was noise from the power supply, espeically as the battery got more discharged. So I placed 3 capacitors near the power supply. 100uf filters low frequency noise, 0.1uf filters high frequency noise and 0.47 uf for good measure. 
+![decou](https://user-images.githubusercontent.com/25108047/104095093-04edfe00-52bb-11eb-885f-74d7d285ee6c.png)
+
+With any circuit, [decoupling](https://www.autodesk.com/products/eagle/blog/what-are-decoupling-capacitors/) and [by-pass capacitors](https://components101.com/articles/decoupling-capacitor-vs-bypass-capacitors-working-and-applications) are essential to smoothen out noisy signals are shunt away the noise. My biggest concern was noise from the power supply, espeically as the battery got more discharged. So I placed 3 capacitors near the power supply. 100uf filters low frequency noise, 0.1uf filters high frequency noise and 0.47 uf for good measure. 
 
 At every power pin on each IC, I placed 0.1uf capacitor. The closer the capacitor to the pin, the better.
 
 ### Output Jack
 The output jack is a standard 3.5mm female header for your every day headphones. The circuit only serves mono so I shorted the L and R pins. 
+
+### Media
+
+Soldering SMD components
+![IMG20210109204333](https://user-images.githubusercontent.com/25108047/104095278-03710580-52bc-11eb-9f23-b84c129f9346.jpg)
+
+Working Protoype [Front]
+
+Note: I made a dome shaped handle for the piezoelectric sensor out of hot glue. Eventually I chose not to 3D print the handle as I abandoned this version of the project
+![IMG20210109204416](https://user-images.githubusercontent.com/25108047/104095276-023fd880-52bc-11eb-8926-904b58655ed9.jpg)
+
+Working Protoype [Side]
+![IMG20210109195346](https://user-images.githubusercontent.com/25108047/104095277-02d86f00-52bc-11eb-809b-95ded1a5a9ac.jpg)
+
 
 ## Issues
 The problem with analog circuits is that testing on a breadboard is very difficult. Noise, loose connections etc make getting any reasonable performance difficult. I did build 
